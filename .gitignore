@@ -1,0 +1,4 @@
+.env
+data/
+output/
+/src/__pycache__/
