@@ -25,7 +25,7 @@ class AthleraAnalyzer:
         try:
             self.client = genai.Client(api_key=API_KEY)
             # Keeping the 2.0-flash model as requested
-            self.model_name = "gemini-2.0-flash" 
+            self.model_name = "gemini-3-flash-preview" 
             print(f"Gemini client initialized with {self.model_name}")
         except Exception as e:
             raise RuntimeError(f"Failed to initialize Gemini client: {e}")
@@ -49,7 +49,10 @@ class AthleraAnalyzer:
         return knowledge[:5000]
 
     @retry(
-        retry=retry_if_exception_type(google.api_core.exceptions.ResourceExhausted),
+        retry=retry_if_exception_type((
+            google.api_core.exceptions.ResourceExhausted, 
+            google.api_core.exceptions.ServiceUnavailable
+        )),
         wait=wait_exponential(multiplier=2, min=15, max=90),
         stop=stop_after_attempt(3),
     )
