@@ -23,7 +23,7 @@ As an AI service provider, maintaining data integrity and privacy is paramount. 
 
 ---
 
-## Setup & Installation
+## Setup Instructions
 
 ### Prerequisites
 * Python 3.10+
@@ -49,3 +49,11 @@ Run the core pipeline to process all videos and generate the final analysis:
 python src/main.py
 ```
 The result is exported as a structured Markdown report in the output/ directory.
+
+## Technical Summary
+### Problem-Solving Flow
+1. Model Discovery: Utilized genai.list_models() to identify the most robust model endpoints available for high-fidelity video understanding.
+
+2. File Handling: Resolved INVALID_ARGUMENT errors by refactoring local file access into a cloud-native Upload-and-Poll pattern using the Google File API to ensure file state is ACTIVE before inference.
+
+3. Quota Management: Managed 429 RESOURCE_EXHAUSTED errors by implementing adaptive throttling (90s-120s cooldowns) and token-minimization strategies such as summarizing CSV data.
