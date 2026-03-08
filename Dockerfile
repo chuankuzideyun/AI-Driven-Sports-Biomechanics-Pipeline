@@ -1,26 +1,28 @@
-# Use a base image for a small footprint
+# Use a slim Python 3.10 base image
 FROM python:3.10-slim
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Install system dependencies
+# Updated libgl1-mesa-glx to libgl1 which is the current standard
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy only the requirements
+# Copy requirements and install
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the source code into the container
+# Copy source code
 COPY src/ . 
 
-# Create necessary directories for runtime data
+# Create output and data directories
 RUN mkdir -p output data
 
-# Ensure Python output is sent straight to terminal without buffering
+# Environment variables
 ENV PYTHONUNBUFFERED=1
 
+# Run the application
 CMD ["python", "main.py"]
