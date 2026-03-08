@@ -23,6 +23,8 @@ class AthleraAnalyzer:
 
     def extract_pdf_knowledge(self, pdf_folder):
         knowledge_base = ""
+        if not os.path.exists(pdf_folder) or not os.listdir(pdf_folder):
+            return "No biomechanics documentation provided."
         for file in os.listdir(pdf_folder):
             if file.endswith(".pdf"):
                 path = os.path.join(pdf_folder, file)

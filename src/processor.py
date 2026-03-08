@@ -30,7 +30,11 @@ class SprintDataProcessor:
         """Identifies technical indicators like braking forces or peak power."""
         anomalies = []
         
-        # 1. Braking Phase: Speed is high but acceleration is significantly negative
+        # Guard clause: If the dataframe is empty, return empty list immediately
+        if df.empty:
+            return anomalies
+        
+        # 1. Braking Phase
         braking = df[(df['Speed'] > 3) & (df['Acceleration'] < -1.5)]
         if not braking.empty:
             peak_braking = braking.loc[braking['Acceleration'].idxmin()]
@@ -42,12 +46,14 @@ class SprintDataProcessor:
             })
 
         # 2. Peak Power Output
-        peak_p_row = df.loc[df['Power'].idxmax()]
-        anomalies.append({
-            "time": peak_p_row['Time'],
-            "frame": int(peak_p_row['frame_number']),
-            "label": "Peak Power Output",
-            "description": f"Power: {peak_p_row['Power']:.1f} W"
-        })
+        # Safe check before calling idxmax
+        if not df['Power'].empty:
+            peak_p_row = df.loc[df['Power'].idxmax()]
+            anomalies.append({
+                "time": peak_p_row['Time'],
+                "frame": int(peak_p_row['frame_number']),
+                "label": "Peak Power Output",
+                "description": f"Power: {peak_p_row['Power']:.1f} W"
+            })
         
         return anomalies

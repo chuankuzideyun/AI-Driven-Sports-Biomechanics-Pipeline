@@ -37,7 +37,8 @@ def test_detect_anomalies_peak_power(sample_sprint_df):
     # Verify whether "Peak Power Output" has been detected.
     power_events = [a for a in anomalies if a['label'] == "Peak Power Output"]
     assert len(power_events) == 1
-    assert power_events[0]['description'].contains("350.0 W")
+    # Use 'in' keyword instead of .contains()
+    assert "350.0 W" in power_events[0]['description']
 
 
 # --- Mocking Gemini API ---
