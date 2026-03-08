@@ -32,13 +32,14 @@ class AthleraAnalyzer:
 
     def extract_pdf_knowledge(self, pdf_folder):
         knowledge = ""
-        if not os.path.exists(pdf_folder):
+        if not os.path.exists(pdf_folder) or not os.listdir(pdf_folder):
             return "No biomechanics documentation provided."
 
         for file in os.listdir(pdf_folder):
             if file.endswith(".pdf"):
                 try:
                     reader = PdfReader(os.path.join(pdf_folder, file))
+                    # Extract text from first two pages for context
                     for i in range(min(2, len(reader.pages))):
                         text = reader.pages[i].extract_text()
                         if text:
@@ -46,7 +47,8 @@ class AthleraAnalyzer:
                 except Exception as e:
                     print(f"Error reading {file}: {e}")
 
-        return knowledge[:5000]
+        # Final check: if files existed but no text was extracted
+        return knowledge[:5000] if knowledge else "No biomechanics documentation provided."
 
     @retry(
         retry=retry_if_exception_type((
