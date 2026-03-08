@@ -3,52 +3,79 @@
 ## Project Overview
 This project implements an automated, AI-native pipeline designed to analyze athletic sprint performance by fusing multimodal data. It correlates high-speed video recordings with time-series resistance data to identify recurring technical flaws in sprinting mechanics across multiple sessions.
 
-The system leverages **Gemini 2.0/2.5 Flash** models to perform deep reasoning on biomechanical patterns, following an **AI-accelerated coding workflow** where all analysis is generated through a single execution pipeline.
+The system leverages **Gemini 2.0 Flash** models to perform deep reasoning on biomechanical patterns, following an AI-accelerated coding workflow where all analysis is generated through a single execution pipeline.
 
 ---
 
-## Technical Architecture & Security Strategy
+## Technical Explanation
 
-### 1. LLM Data Protection Framework
-As an AI service provider, maintaining data integrity and privacy is paramount. The system adopts the following strategy:
+### 1. MLOps
+This project now follows MLOps best practices to ensure reliability, reproducibility, and automated deployment.
 
-* **Inbound Data Sanitization:** Implementing automated detection for Personally Identifiable Information (PII) to redact sensitive data before it reaches the model context.
-* **Middleware Guardrails:** Using semantic filtering to monitor assistant output, ensuring confidential documents or sensitive metrics are not leaked during streaming responses.
-* **Source Access Control:** Enforcing strict auditing and "Least Privilege" protocols for all connected data sources and servers to prevent unauthorized data extraction.
+#### 1.1 Automated CI/CD Pipeline (GitHub Actions):
+The repository is integrated with GitHub Actions to handle the full lifecycle of the application:
+
+* **Continuous Integration (CI):** Every code push triggers an automated suite of pytest unit tests to verify data processing logic and API connectivity.
+
+* **Continuous Deployment (CD):** Once tests pass, the system automatically builds a Docker image and pushes it to Docker Hub, ensuring the latest version is always ready for production.
+
+#### 1.2 Robust Testing Suite (pytest): 
+
+Implemented a professional testing framework to safeguard the analytical logic:
+
+* **Logic Validation**: Verifies that the SprintDataProcessor correctly identifies peak power and braking anomalies even with edge-case data.
+
+* **Environment Mocking:** Uses unittest.mock to simulate Gemini API responses, allowing for cost-effective and fast testing without consuming API quotas.
+
+* **Robustness Checks:** Tests the system's behavior against empty dataframes and missing PDF documentation to prevent runtime crashes.
+
+#### 1.3 Containerization (Docker): 
+The entire pipeline is containerized using Docker to eliminate "it works on my machine" issues:
+
+* **Environment Standardization:** All system dependencies (OpenCV-related libraries, Python 3.10) are pre-configured in a slim Debian-based image.
+
+* **Portable Deployment:** The pipeline can be executed on any server (Cloud or Local) using a single command.
 
 ### 2. Analytical Logic
-* **Multimodal Fusion:** The pipeline synchronizes `video.mov` files with sensor data (CSV) to observe movement phases and force production patterns.
-* **Knowledge-Informed Reasoning:** The LLM is provided with foundational biomechanical knowledge extracted from domain-specific PDF documentation to support its analysis of arm mechanics, posture, and asymmetries.
-* **Resilience Engineering:** To handle API rate limits, the system features a **Checkpoint & Resume** mechanism that prevents redundant processing of previously analyzed runs.
+#### 2.1 Multimodal Fusion:
+The pipeline synchronizes `video.mov` files with sensor data (CSV) to observe movement phases and force production patterns.
+
+#### 2.2 Knowledge-Informed Reasoning:
+The LLM is provided with foundational biomechanical knowledge extracted from domain-specific PDF documentation to support its analysis of arm mechanics, posture, and asymmetries.
+
+#### 2.3 Resilience Engineering:
+To handle API rate limits, the system features a **Checkpoint & Resume** mechanism that prevents redundant processing of previously analyzed runs.
 
 ---
 
 ## Setup Instructions
 
 ### Prerequisites
-* Python 3.10+
-* A valid Gemini API Key 
+* Python 3.10+ (for local development)
 
-### Installation
-It is recommended to install dependencies directly through your project's specific Python interpreter to avoid environment conflicts:
+* Docker (for containerized execution)
 
-```bash
-python -m pip install -U google-genai pandas PyPDF2 tenacity python-dotenv
-```
+* A valid Gemini API Key
 
-### Environment Setup
-Create a .env file in the root directory:
-```bash
-GEMINI_API_KEY=your_api_key_here
-```
-
-### Execution
-Run the core pipeline to process all videos and generate the final analysis:
+### Option A: Local Installation
 
 ```bash
+python -m pip install -r requirements.txt
 python src/main.py
 ```
-The result is exported as a structured Markdown report in the output/ directory.
+
+### Option B: Professional Docker Execution (Recommended)
+You can now run the entire pipeline without installing Python locally. Pull the image directly from Docker Hub:
+```bash
+# Pull the latest image
+docker pull your-dockerhub-username/athlera-ai:latest
+
+# Run the analysis by mounting your local data folder
+docker run -e GEMINI_API_KEY="your_api_key" \
+           -v $(pwd)/data:/app/data \
+           -v $(pwd)/output:/app/output \
+           your-dockerhub-username/athlera-ai:latest
+```
 
 ## Technical Summary
 ### Problem-Solving Flow
