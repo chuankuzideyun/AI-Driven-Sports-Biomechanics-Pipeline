@@ -1,0 +1,8 @@
+google-generativeai
+google-genai
+pandas
+PyPDF2
+tenacity
+python-dotenv
+pytest
+flake8
