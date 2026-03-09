@@ -20,7 +20,7 @@ PDF_DIR = os.path.join(DATA_ROOT, "biomechanics_pdfs")
 OUTPUT_FILE = "output/final_analysis_report.md"
 
 
-class AthleraAnalyzer:
+class MagicAnalyzer:
     def __init__(self):
         try:
             self.client = genai.Client(api_key=API_KEY)
@@ -111,11 +111,11 @@ Output in Markdown format.
 
 
 def main():
-    analyzer = AthleraAnalyzer()
+    analyzer = MagicAnalyzer()
 
     os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write("# Athlera Sprint Performance Report\n\n")
+        f.write("# Magic Sprint Performance Report\n\n")
 
     print("Step 1: Extracting PDF knowledge...")
     biomechanics_context = analyzer.extract_pdf_knowledge(PDF_DIR)

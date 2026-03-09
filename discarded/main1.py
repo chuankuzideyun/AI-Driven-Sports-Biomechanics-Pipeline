@@ -2,7 +2,7 @@
 import os
 from dotenv import load_dotenv
 from processor import SprintDataProcessor
-from llm_client import AthleraAIClient
+from llm_client import MagicAIClient
 
 load_dotenv()
 
@@ -13,10 +13,10 @@ def main():
         print("Error: GEMINI_API_KEY not found. Please check your .env file.")
         return
         
-    client = AthleraAIClient(API_KEY)
+    client = MagicAIClient(API_KEY)
     
     runs = ['run_01', 'run_02', 'run_03', 'run_04', 'run_05']
-    final_report = "# Athlera Sprint Analysis Global Report\n\n"
+    final_report = "# Magic Sprint Analysis Global Report\n\n"
 
     for run in runs:
         print(f"Processing {run}...")
@@ -38,7 +38,7 @@ def main():
         final_report += f"## Analysis for {run}\n{analysis}\n\n"
 
     # 2. Output final Markdown
-    with open("output/Final_Athlera_Report.md", "w") as f:
+    with open("output/Final_Magic_Report.md", "w") as f:
         f.write(final_report)
     
     print("Success! Report generated in output folder.")

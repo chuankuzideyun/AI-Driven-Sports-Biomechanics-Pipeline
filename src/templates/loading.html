@@ -1,12 +1,57 @@
-<body class="bg-pink-50 flex flex-col items-center justify-center min-h-screen">
-    <div class="text-center space-y-6">
-        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-pink-500 border-opacity-50"></div>
-        <h2 class="text-2xl font-bold text-pink-600">AI Analysis in Progress</h2>
-        <p class="text-gray-500">Task ID: {{ task_id }}</p>
-        <p class="animate-pulse text-pink-400">Current State: {{ state }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic AI | Analyzing...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .pink-gradient { background: linear-gradient(135deg, #fce7f3 0%, #ffe4e6 100%); }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
+        
+        @keyframes subtle-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-subtle { animation: subtle-bounce 2s infinite ease-in-out; }
+    </style>
+</head>
+<body class="pink-gradient min-h-screen flex items-center justify-center p-6">
+    <div class="glass max-w-md w-full rounded-[2.5rem] shadow-2xl p-10 border border-white/50 text-center space-y-8">
+        
+        <div class="relative flex justify-center">
+            <div class="absolute inset-0 bg-pink-300 rounded-full blur-2xl opacity-20 animate-pulse"></div>
+            
+            <div class="w-24 h-24 border-4 border-pink-100 border-t-pink-500 rounded-full animate-spin"></div>
+            
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-pink-500 animate-bounce-subtle">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <h2 class="text-3xl font-extrabold text-gray-800 tracking-tight">AI Diagnostics</h2>
+            <p class="text-pink-600 font-semibold tracking-wide uppercase text-xs">Current State: <span class="bg-pink-100 px-2 py-1 rounded">{{ state }}</span></p>
+        </div>
+
+        <div class="w-full bg-pink-100 h-2 rounded-full overflow-hidden shadow-inner">
+            <div class="bg-pink-500 h-full animate-[progress_60s_ease-in-out]" style="width: 70%"></div>
+        </div>
+
+        <div class="space-y-2">
+            <p class="text-gray-500 text-sm">Gemini is fusing video and sensor data...</p>
+            <p class="text-gray-400 text-[10px] font-mono break-all">Task ID: {{ task_id }}</p>
+        </div>
+
+        <script>
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
+        </script>
     </div>
-    <script>
-        // Poll every 3 seconds
-        setTimeout(() => { window.location.reload(); }, 3000);
-    </script>
 </body>
+</html>

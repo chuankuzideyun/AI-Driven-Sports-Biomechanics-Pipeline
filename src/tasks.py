@@ -1,9 +1,9 @@
 from celery_app import celery_instance
-from main import AthleraAnalyzer
+from main import MagicAnalyzer
 from processor import SprintDataProcessor
 import os
 
-analyzer = AthleraAnalyzer()
+analyzer = MagicAnalyzer()
 
 @celery_instance.task(bind=True)
 def run_analysis_task(self, run_id, video_p, csv_p, json_p, context):

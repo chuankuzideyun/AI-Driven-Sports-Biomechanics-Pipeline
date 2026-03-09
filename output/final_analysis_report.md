@@ -1,4 +1,4 @@
-# Athlera Sprint Performance Report
+# Magic Sprint Performance Report
 
 ## Analysis: run_01
 

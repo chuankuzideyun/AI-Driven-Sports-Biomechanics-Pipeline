@@ -68,13 +68,13 @@ python src/main.py
 You can now run the entire pipeline without installing Python locally. Pull the image directly from Docker Hub:
 ```bash
 # Pull the latest image
-docker pull your-dockerhub-username/athlera-ai:latest
+docker pull your-dockerhub-username/Magic-ai:latest
 
 # Run the analysis by mounting your local data folder
 docker run -e GEMINI_API_KEY="your_api_key" \
            -v $(pwd)/data:/app/data \
            -v $(pwd)/output:/app/output \
-           your-dockerhub-username/athlera-ai:latest
+           your-dockerhub-username/Magic-ai:latest
 ```
 
 ## Technical Summary

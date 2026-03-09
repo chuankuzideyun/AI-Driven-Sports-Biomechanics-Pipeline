@@ -51,4 +51,4 @@ jobs:
           context: .
           push: true
           # Replace with your Docker Hub username/repo
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/athlera-ai:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/Magic-ai:latest

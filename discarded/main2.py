@@ -16,7 +16,7 @@ OUTPUT_FILE = "output/final_analysis_report.md"
 
 genai.configure(api_key=API_KEY)
 
-class AthleraAnalyzer:
+class MagicAnalyzer:
     def __init__(self):
         # Gemini 1.5 Flash is recommended for its high-speed video processing
         self.model = genai.GenerativeModel('gemini-1.5-flash')
@@ -69,7 +69,7 @@ class AthleraAnalyzer:
         return response.text
 
 def main():
-    analyzer = AthleraAnalyzer()
+    analyzer = MagicAnalyzer()
     
     print("Pre-processing PDF documentation...")
     biomechanics_context = analyzer.extract_pdf_knowledge(PDF_DIR)

@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from unittest.mock import MagicMock, patch
 from processor import SprintDataProcessor
-from main import AthleraAnalyzer
+from main import MagicAnalyzer
 
 # --- Unit Tests for Processor ---
 
@@ -47,12 +47,12 @@ def test_detect_anomalies_peak_power(sample_sprint_df):
 def test_analyzer_initialization(mock_client):
     """Test whether the Analyzer can correctly handle situations where the API Key is missing"""
     with patch.dict('os.environ', {'GEMINI_API_KEY': 'test_key'}):
-        analyzer = AthleraAnalyzer()
+        analyzer = MagicAnalyzer()
         assert analyzer.model_name == "gemini-3-flash-preview"
 
 def test_pdf_extraction_empty_folder(tmp_path):
     """Testing the system's robustness when the PDF folder is empty"""
-    analyzer = AthleraAnalyzer()
+    analyzer = MagicAnalyzer()
     # 使用 pytest 提供的临时目录 tmp_path
     empty_dir = tmp_path / "empty_pdfs"
     empty_dir.mkdir()
