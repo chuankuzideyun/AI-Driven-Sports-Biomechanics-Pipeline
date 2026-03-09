@@ -24,5 +24,8 @@ RUN mkdir -p output data
 # Environment variables
 ENV PYTHONUNBUFFERED=1
 
-# Run the application
-CMD ["python", "main.py"]
+# Expose the Flask port
+EXPOSE 5000
+
+# Start the Flask web server
+CMD ["python", "app.py"]

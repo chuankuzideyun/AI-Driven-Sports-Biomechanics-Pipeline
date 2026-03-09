@@ -6,3 +6,5 @@ tenacity
 python-dotenv
 pytest
 flake8
+Flask
+Werkzeug
