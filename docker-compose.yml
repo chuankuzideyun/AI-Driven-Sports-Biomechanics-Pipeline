@@ -1,0 +1,38 @@
+services:
+  # 1. Redis: The Message Broker
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  # 2. Flask Web Interface
+  web:
+    build: .
+    image: athlera-ai:latest
+    # Override the default CMD in Dockerfile to run Flask
+    command: python app.py
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - REDIS_URL=redis://redis:6379/0
+      - PYTHONPATH=.
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - redis
+
+  # 3. Celery Worker: The AI Engine
+  worker:
+    build: .
+    image: athlera-ai:latest
+    # Run the Celery worker process
+    command: celery -A tasks worker --loglevel=info
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - REDIS_URL=redis://redis:6379/0
+      - PYTHONPATH=.
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - redis
