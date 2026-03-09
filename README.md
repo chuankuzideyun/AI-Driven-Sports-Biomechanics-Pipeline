@@ -29,12 +29,12 @@ Implemented a professional testing framework to safeguard the analytical logic:
 
 * **Robustness Checks:** Tests the system's behavior against empty dataframes and missing PDF documentation to prevent runtime crashes.
 
-#### 1.3 Containerization (Docker): 
-The entire pipeline is containerized using Docker to eliminate "it works on my machine" issues:
+#### 1.3 Distributed Task Queue:
+Implemented **Celery** with **Redis** as a message broker to decouple heavy AI inference from the web server, preventing request timeouts and enabling horizontal scaling.
 
-* **Environment Standardization:** All system dependencies (OpenCV-related libraries, Python 3.10) are pre-configured in a slim Debian-based image.
+#### 1.4 Container Orchestration:
+Transitioned to a multi-container setup using **Docker Compose**, managing synchronized lifecycles for the Flask Web UI, Celery Worker, and Redis instances.
 
-* **Portable Deployment:** The pipeline can be executed on any server (Cloud or Local) using a single command.
 
 ### 2. Analytical Logic
 #### 2.1 Multimodal Fusion:
@@ -48,34 +48,17 @@ To handle API rate limits, the system features a **Checkpoint & Resume** mechani
 
 ---
 
-## Setup Instructions
+## Quick Start (One-Command Execution)
 
-### Prerequisites
-* Python 3.10+ (for local development)
-
-* Docker (for containerized execution)
-
-* A valid Gemini API Key
-
-### Option A: Local Installation
-
+### Professional Docker Compose Execution (Recommended)
+The entire distributed system (Web + Worker + Redis) can be launched with a single command:
+1. Create a `.env` file with your `GEMINI_API_KEY`.
+2. Run the system:
 ```bash
-python -m pip install -r requirements.txt
-python src/main.py
+docker-compose up --build
 ```
+3. Access the UI at http://localhost:5000 to select a performance run (run_01 to run_05).
 
-### Option B: Professional Docker Execution (Recommended)
-You can now run the entire pipeline without installing Python locally. Pull the image directly from Docker Hub:
-```bash
-# Pull the latest image
-docker pull your-dockerhub-username/Magic-ai:latest
-
-# Run the analysis by mounting your local data folder
-docker run -e GEMINI_API_KEY="your_api_key" \
-           -v $(pwd)/data:/app/data \
-           -v $(pwd)/output:/app/output \
-           your-dockerhub-username/Magic-ai:latest
-```
 
 ## Technical Summary
 ### Problem-Solving Flow
