@@ -1,4 +1,4 @@
-name: Sports Biomechanics MLOps CI/CD
+name: Sports Biomechanics DevSecOps Pipeline
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # Job 1: Quality Control and Logic Validation
+  # Job 1: Quality control and logical validation
   test:
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.12' 
 
       - name: Install Dependencies
         run: |
@@ -30,11 +30,15 @@ jobs:
           PYTHONPATH: src
         run: pytest tests/test_pipeline.py -v
 
-  # Job 2: Containerization and Deployment
+  # Job 2: Containerization, Security Scanning, and Push
   build-and-push:
-    needs: test # Only build if tests pass
+    needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions: 
+      contents: 'read'
+      id-token: 'write'
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -45,10 +49,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
+      # --- Container security---
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/magic-ai:${{ github.sha }} .
+
+      - name: Run Trivy Vulnerability Scanner
+        uses: aquasecurity/trivy-action@master
         with:
-          context: .
-          push: true
-          # Replace with your Docker Hub username/repo
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/Magic-ai:latest
+          image-ref: '${{ secrets.DOCKERHUB_USERNAME }}/magic-ai:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1' # If a critical vulnerability is detected, the pipeline shall be halted.
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Push Docker Image
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/magic-ai:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/magic-ai:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/magic-ai:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/magic-ai:latest
