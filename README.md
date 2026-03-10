@@ -59,6 +59,7 @@ docker-compose up --build
 ```
 3. Access the UI at http://localhost:5000 to select a performance run (run_01 to run_05).
 
+---
 
 ## Technical Summary
 ### Problem-Solving Flow
@@ -67,3 +68,19 @@ docker-compose up --build
 2. File Handling: Resolved INVALID_ARGUMENT errors by refactoring local file access into a cloud-native Upload-and-Poll pattern using the Google File API to ensure file state is ACTIVE before inference.
 
 3. Quota Management: Managed 429 RESOURCE_EXHAUSTED errors by implementing adaptive throttling (90s-120s cooldowns) and token-minimization strategies such as summarizing CSV data.
+
+---
+
+## Demo
+
+<p align="center">
+  <img width="586" height="588" alt="Athlera AI Main Interface" src="https://github.com/user-attachments/assets/6e2a60b5-6e65-4894-80c9-dd7e21091230" />
+</p>
+
+<p align="center">
+  <img width="642" height="595" alt="Task Polling Status" src="https://github.com/user-attachments/assets/422207bd-3eb5-4b24-b928-45fa7fd80a93" />
+</p>
+
+<p align="center">
+  <img width="1131" height="951" alt="AI Generated Biomechanics Report" src="https://github.com/user-attachments/assets/3beeb136-6e5a-458e-941d-66da91997428" />
+</p>
