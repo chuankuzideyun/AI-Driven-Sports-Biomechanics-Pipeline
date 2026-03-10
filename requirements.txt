@@ -1,12 +1,27 @@
-google-generativeai
-google-genai
-pandas
-PyPDF2
-tenacity
-python-dotenv
-pytest
-flake8
-Flask
-Werkzeug
-celery
-redis
+# --- Core AI & API ---
+google-generativeai>=0.8.0
+google-genai>=1.0.0
+tenacity>=8.0.0
+
+# --- Data Processing ---
+pandas>=2.0.0
+PyPDF2>=3.0.0
+
+# --- Web & Infrastructure ---
+Flask>=3.0.0
+Werkzeug>=3.0.0
+python-dotenv>=1.0.0
+
+# --- Async Task Queue ---
+celery>=5.3.0
+redis>=5.0.0
+
+# --- Dev & Testing ---
+pytest>=7.0.0
+flake8>=6.0.0
+
+# --- Security Fixes ---
+# Forced upgrade to fix CVE-2026-24049 and CVE-2026-23949
+wheel>=0.46.2
+setuptools>=70.0.0
+jaraco.context>=6.1.0
